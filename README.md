@@ -1,1 +1,1 @@
-# T120B029-project
+# Projektas programų sistemų analizės ir projektavimo įrankiai moduliui
