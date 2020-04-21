@@ -1,22 +1,20 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router';
-import { Layout } from './components/Layout';
-import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
+import React from 'react';
+import { Route, Switch } from 'react-router-dom';
+import Layout from './components/Home/Layout';
+import Home from './components/Home/Home';
+import ItemList from './components/Items/ItemList';
+import CreateItem from './components/Items/ItemForm/CreateItem';
 
-import './custom.css'
-
-export default class App extends Component {
-  static displayName = App.name;
-
-  render () {
+const App = () => {
     return (
       <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/fetch-data' component={FetchData} />
+        <Switch>\
+          <Route exact path='/' component={Home} />
+          <Route exact path='/items' component={ItemList} />
+          <Route exact path='/items/create' component={CreateItem} />
+        </Switch>
       </Layout>
     );
-  }
 }
+
+export default App;
