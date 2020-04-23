@@ -11,6 +11,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { NavLink } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as actions from '../Cart/actions';
 
 const useStyles = makeStyles(() => ({
     center: {
@@ -38,7 +41,7 @@ const useStyles = makeStyles(() => ({
   }));
   
 
-const ItemList = () => {
+const ItemList = ({dispatchAddItem}) => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [items, setItems] = useState([]);
@@ -104,6 +107,7 @@ const ItemList = () => {
               <TableCell align="right">Svoris&nbsp;(g)</TableCell>
               <TableCell align="right">Kaina&nbsp;(€)</TableCell>
               <TableCell align="right"></TableCell>
+              <TableCell align="right"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -118,6 +122,7 @@ const ItemList = () => {
                 <TableCell align="right">{row.weight}</TableCell>
                 <TableCell align="right">{row.price}</TableCell>
                 <TableCell align="right"><Button onClick={() => handleDelete(row.id)}>Ištrinti</Button></TableCell>
+                <TableCell align="right"><Button onClick={() => dispatchAddItem({id: row.id, name: row.name, price: row.price, count:1})}>Į krepšelį</Button></TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -127,5 +132,15 @@ const ItemList = () => {
     );
 }
 
-
-export default ItemList;
+export default connect(
+  (state) => ({
+    items: state.cart,
+  }),
+  (dispatch) =>
+    bindActionCreators(
+      {
+        dispatchAddItem: actions.addItem,
+      },
+      dispatch
+    )
+)(ItemList);

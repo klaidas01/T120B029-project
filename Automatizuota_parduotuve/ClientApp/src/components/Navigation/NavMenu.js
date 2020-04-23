@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { IconButton } from '@material-ui/core';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
@@ -29,6 +31,11 @@ export class NavMenu extends Component {
             <NavbarBrand tag={Link} to="/">Automatizuota parduotuvė</NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
+              <ul>
+              <IconButton component={Link} to="/cart">
+                <ShoppingCartIcon />
+              </IconButton>
+              </ul>
               <ul className="navbar-nav flex-grow">
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/items">Prekės</NavLink>
