@@ -55,12 +55,12 @@ const ItemList = ({dispatchAddItem, role}) => {
         try {
           const result = await axiosInstance.get('items');
           setItems(result.data);
+          setIsLoading(false);
         }
         catch (e) {
           console.log(e);
           //Handle get failure
         }
-        setIsLoading(false);
     };
 
     const handleDelete = async (id) => {
