@@ -1,11 +1,11 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
-import { NavMenu } from '../Navigation/NavMenu';
+import NavMenu from '../Navigation/NavMenu';
 
 const Layout = (props) => {
     return (
       <div>
-        <NavMenu />
+        <NavMenu role={props.role} logout={props.logout}/>
         <Container>
           {props.children}
         </Container>

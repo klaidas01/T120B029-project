@@ -41,7 +41,7 @@ const useStyles = makeStyles(() => ({
   }));
   
 
-const ItemList = ({dispatchAddItem}) => {
+const ItemList = ({dispatchAddItem, role}) => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [items, setItems] = useState([]);
@@ -87,14 +87,14 @@ const ItemList = ({dispatchAddItem}) => {
         <>
         <div className={classes.headerWrapper}>
             <h1 className={classes.title}>Prekės</h1>
-            <Button
+            {role === "admin" && <Button
               className={classes.createBtn}
               variant="outlined"
               component={NavLink}
               to="/items/create"
             >
                 Nauja prekė
-            </Button>
+            </Button>}
         </div>
         <TableContainer component={Paper}>
         <Table aria-label="item table">
@@ -106,7 +106,7 @@ const ItemList = ({dispatchAddItem}) => {
               <TableCell align="right">Dydis&nbsp;(cm)</TableCell>
               <TableCell align="right">Svoris&nbsp;(g)</TableCell>
               <TableCell align="right">Kaina&nbsp;(€)</TableCell>
-              <TableCell align="right"></TableCell>
+              {role === "admin" && <TableCell align="right"></TableCell>}
               <TableCell align="right"></TableCell>
             </TableRow>
           </TableHead>
@@ -121,7 +121,7 @@ const ItemList = ({dispatchAddItem}) => {
                 <TableCell align="right">{row.size}</TableCell>
                 <TableCell align="right">{row.weight}</TableCell>
                 <TableCell align="right">{row.price}</TableCell>
-                <TableCell align="right"><Button onClick={() => handleDelete(row.id)}>Ištrinti</Button></TableCell>
+                {role === "admin" && <TableCell align="right"><Button onClick={() => handleDelete(row.id)}>Ištrinti</Button></TableCell>}
                 <TableCell align="right"><Button onClick={() => dispatchAddItem({id: row.id, name: row.name, price: row.price, count:1})}>Į krepšelį</Button></TableCell>
               </TableRow>
             ))}
