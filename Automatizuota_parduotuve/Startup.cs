@@ -25,7 +25,7 @@ namespace Automatizuota_parduotuve
 
             services.AddControllersWithViews();
 
-            services.AddDbContext<ItemContext>(options =>
+            services.AddDbContext<StoreContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             // In production, the React files will be served from this directory

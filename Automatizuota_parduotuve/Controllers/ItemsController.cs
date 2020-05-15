@@ -14,9 +14,9 @@ namespace Automatizuota_parduotuve.Controllers
     [ApiController]
     public class ItemsController : ControllerBase
     {
-        private readonly ItemContext _context;
+        private readonly Context.StoreContext _context;
 
-        public ItemsController(ItemContext context)
+        public ItemsController(Context.StoreContext context)
         {
             _context = context;
         }
