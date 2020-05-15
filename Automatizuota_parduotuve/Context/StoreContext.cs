@@ -18,6 +18,10 @@ namespace Automatizuota_parduotuve.Context
 
             modelBuilder.Entity<Order>()
                 .HasKey(o => o.Id);
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Locker)
+                .WithMany(l => l.Orders)
+                .HasForeignKey(o => o.LockerId);
 
             modelBuilder.Entity<ItemSet>()
                 .HasKey(its => new { its.ItemId, its.OrderId });
@@ -29,10 +33,14 @@ namespace Automatizuota_parduotuve.Context
                 .HasOne(its => its.Order)
                 .WithMany(o => o.ItemSets)
                 .HasForeignKey(its => its.OrderId);
+
+            modelBuilder.Entity<Locker>()
+                .HasKey(l => l.Id);
         }
 
         public DbSet<Item> Items { get; set; }
         public DbSet<ItemSet> ItemSets { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Locker> Lockers { get; set; }
     }
 }

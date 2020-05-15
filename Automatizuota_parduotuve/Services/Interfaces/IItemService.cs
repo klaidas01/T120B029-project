@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace backend.Services.Interfaces
+namespace Services.Interfaces
 {
     public interface IItemService
     {
@@ -12,5 +12,6 @@ namespace backend.Services.Interfaces
         public Task<Item> GetItem(int id);
         public Task<int> Post(Item item);
         public Task<Item> DeleteItem(int id);
+        public Task<bool> ValidateItems(IList<ItemDTO> items);
     }
 }

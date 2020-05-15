@@ -1,5 +1,5 @@
 ﻿using Automatizuota_parduotuve.Models;
-using backend.Services.Interfaces;
+using Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -42,6 +42,16 @@ namespace Automatizuota_parduotuve.Services
             await _context.SaveChangesAsync();
 
             return item;
+        }
+        public async Task<bool> ValidateItems(IList<ItemDTO> items)
+        {
+            foreach (var itemDTO in items)
+            {
+                var item = await this.GetItem(itemDTO.Id);
+                if (itemDTO.Count > item.Amount)
+                    return false;
+            }
+            return true;
         }
     }
 }

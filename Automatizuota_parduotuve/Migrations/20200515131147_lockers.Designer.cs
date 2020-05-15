@@ -4,14 +4,16 @@ using Automatizuota_parduotuve.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Automatizuota_parduotuve.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20200515131147_lockers")]
+    partial class lockers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,7 +84,7 @@ namespace Automatizuota_parduotuve.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Lockers");
+                    b.ToTable("Locker");
                 });
 
             modelBuilder.Entity("Automatizuota_parduotuve.Models.Order", b =>
@@ -93,9 +95,6 @@ namespace Automatizuota_parduotuve.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("LockerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("orderDate")

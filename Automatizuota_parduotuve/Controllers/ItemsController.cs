@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Automatizuota_parduotuve.Context;
 using Automatizuota_parduotuve.Models;
-using backend.Services.Interfaces;
+using Services.Interfaces;
 
 namespace Automatizuota_parduotuve.Controllers
 {

@@ -9,7 +9,7 @@ const Routes = ({role}) => {
         <Switch>
             <Route exact path='/items' render={() => <ItemList role={role} />}/>
             {role === "admin" && <Route exact path='/items/create' component={CreateItem} />}
-            <Route exact path='/cart' component={Cart} />
+            <Route exact path='/cart' render={() => <Cart role={role} />}/>
             <Redirect to="/items" />
         </Switch>
     );
