@@ -1,4 +1,6 @@
 using Automatizuota_parduotuve.Context;
+using Automatizuota_parduotuve.Services;
+using backend.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,6 +29,7 @@ namespace Automatizuota_parduotuve
 
             services.AddDbContext<StoreContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IItemService, ItemService>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

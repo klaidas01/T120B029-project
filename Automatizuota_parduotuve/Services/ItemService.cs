@@ -1,0 +1,47 @@
+﻿using Automatizuota_parduotuve.Models;
+using backend.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Automatizuota_parduotuve.Services
+{
+    public class ItemService : IItemService
+    {
+        private readonly Context.StoreContext _context;
+
+        public ItemService(Context.StoreContext context)
+        {
+            _context = context;
+        }
+        public async Task<List<Item>> GetItems()
+        {
+            return await _context.Items.ToListAsync();
+        }
+        public async Task<Item> GetItem(int id)
+        {
+            return await _context.Items.FindAsync(id);
+        }
+        public async Task<int> Post(Item item)
+        {
+            _context.Items.Add(item);
+            await _context.SaveChangesAsync();
+            return item.Id;
+        }
+        public async Task<Item> DeleteItem(int id)
+        {
+            var item = await _context.Items.FindAsync(id);
+            if (item == null)
+            {
+                return null;
+            }
+
+            _context.Items.Remove(item);
+            await _context.SaveChangesAsync();
+
+            return item;
+        }
+    }
+}
