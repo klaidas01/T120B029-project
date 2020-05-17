@@ -60,7 +60,7 @@ const Cart = ({role, dispatchRemoveItem, dispatchRemoveAll, dispatchAddItem, dis
       );
     }
     if (redirect) {
-      return <Redirect to="/items" push />;
+      return <Redirect to="/orders" push />;
     }
     return (
         <>

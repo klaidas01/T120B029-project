@@ -12,5 +12,6 @@ namespace Services.Interfaces
         public Task<List<Order>> GetUserOrders(int id);
         public Task<Order> GetOrder(int id);
         public Task<int> CreateOrder(OrderDTO order);
+        public Task<Order> DeleteOrder(int id);
     }
 }

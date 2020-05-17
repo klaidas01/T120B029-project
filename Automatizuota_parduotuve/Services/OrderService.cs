@@ -26,11 +26,19 @@ namespace Automatizuota_parduotuve.Services.Interfaces
         public async Task<List<Order>> GetOrders()
         {
             return await _context.Orders
+                .Include(o => o.ItemSets)
+                .ThenInclude(its => its.Item)
+                .Include(o => o.Locker)
                 .ToListAsync();
         }
         public async Task<List<Order>> GetUserOrders(int id)
         {
-            return await _context.Orders.Where(o => o.UserId == id).ToListAsync();
+            return await _context.Orders
+                .Where(o => o.UserId == id)
+                .Include(o => o.ItemSets)
+                .ThenInclude(its => its.Item)
+                .Include(o => o.Locker)
+                .ToListAsync();
         }
         public async Task<Order> GetOrder(int id)
         {
@@ -61,8 +69,24 @@ namespace Automatizuota_parduotuve.Services.Interfaces
             {
                 var itemSet = new ItemSet { OrderId = o.Id, ItemId = item.Id, Count = item.Count };
                 await _itemSetService.CreateItemSet(itemSet);
+                var orderedItem = await _itemService.GetItem(item.Id);
+                orderedItem.Amount = orderedItem.Amount - item.Count;
+                await _context.SaveChangesAsync();
             }
             return o.Id;
+        }
+        public async Task<Order> DeleteOrder(int id)
+        {
+            var order = await _context.Orders.FindAsync(id);
+            if (order == null)
+            {
+                return null;
+            }
+
+            _context.Orders.Remove(order);
+            await _context.SaveChangesAsync();
+
+            return order;
         }
     }
 }

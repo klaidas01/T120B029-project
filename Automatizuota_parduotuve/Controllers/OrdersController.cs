@@ -28,6 +28,12 @@ namespace Automatizuota_parduotuve.Controllers
             return await _orderService.GetOrders();
         }
 
+        [HttpGet("user/{id}")]
+        public async Task<ActionResult<IEnumerable<Order>>> GetUserOrders(int id)
+        {
+            return await _orderService.GetUserOrders(id);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetOrder(int id)
         {
@@ -46,6 +52,18 @@ namespace Automatizuota_parduotuve.Controllers
         {
             var id = await _orderService.CreateOrder(order);
             return Ok(id);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Item>> DeleteItem(int id)
+        {
+            var item = await _orderService.DeleteOrder(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(item);
         }
     }
 }

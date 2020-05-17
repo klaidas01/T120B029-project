@@ -13,6 +13,5 @@ namespace Automatizuota_parduotuve.Models
 
         public bool isFull { get; set; }
 
-        public IList<Order> Orders { get; set; }
     }
 }

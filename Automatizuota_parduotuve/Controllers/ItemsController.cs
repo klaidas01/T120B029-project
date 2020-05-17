@@ -41,9 +41,6 @@ namespace Automatizuota_parduotuve.Controllers
             return item;
         }
 
-        // POST: api/Items
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
         public async Task<ActionResult<Item>> PostItem(Item item)
         {
@@ -52,7 +49,6 @@ namespace Automatizuota_parduotuve.Controllers
             return Ok(id);
         }
 
-        // DELETE: api/Items/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Item>> DeleteItem(int id)
         {

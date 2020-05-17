@@ -120,7 +120,7 @@ namespace Automatizuota_parduotuve.Migrations
             modelBuilder.Entity("Automatizuota_parduotuve.Models.ItemSet", b =>
                 {
                     b.HasOne("Automatizuota_parduotuve.Models.Item", "Item")
-                        .WithMany("ItemSets")
+                        .WithMany()
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -135,7 +135,7 @@ namespace Automatizuota_parduotuve.Migrations
             modelBuilder.Entity("Automatizuota_parduotuve.Models.Order", b =>
                 {
                     b.HasOne("Automatizuota_parduotuve.Models.Locker", "Locker")
-                        .WithMany("Orders")
+                        .WithMany()
                         .HasForeignKey("LockerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

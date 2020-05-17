@@ -16,15 +16,22 @@ const NavMenu = (props) => {
                 Rolė: {props.role}
               </ul>
               <ul>
+              <Button component={NavLink} to="/orders">
+                Užsakymai
+              </Button>
+              </ul>
+              {props.role !== 'system' &&
+              <ul>
               <Button component={NavLink} to="/items">
                 Prekės
               </Button>
-              </ul>
+              </ul>}
+              {props.role !== 'system' &&
               <ul>
               <IconButton component={Link} to="/cart">
                 <ShoppingCartIcon />
               </IconButton>
-              </ul>
+              </ul>}
               <ul>
                 <Button onClick = {props.logout}>Atsijungti</Button>
               </ul>

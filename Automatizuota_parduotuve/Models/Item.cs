@@ -21,7 +21,5 @@ namespace Automatizuota_parduotuve.Models
         public double Weight { get; set; }
 
         public double Price { get; set; }
-
-        public IList<ItemSet> ItemSets { get; set; }
     }
 }
