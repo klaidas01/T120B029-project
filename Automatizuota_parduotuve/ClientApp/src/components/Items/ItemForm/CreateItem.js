@@ -4,6 +4,7 @@ import { axiosInstance } from '../../../axiosInstance';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import { Redirect } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(() => ({
   center: {
@@ -17,6 +18,7 @@ const CreateItemForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   const onSumbit = (values) => {
     setIsLoading(true);
@@ -26,8 +28,13 @@ const CreateItemForm = () => {
         setRedirect(true);
       }
       catch (e) {
-          console.log(e)
-          //Handle post failure
+        enqueueSnackbar('Something went wrong', {
+          anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'center',
+          },
+          variant: 'error',
+        });
       }
       setIsLoading(false);
     };

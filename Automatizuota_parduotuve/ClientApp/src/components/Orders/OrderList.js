@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import Button from '@material-ui/core/Button';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(() => ({
     center: {
@@ -43,9 +44,11 @@ const OrderList = ({role}) => {
     const [isLoading, setIsLoading] = useState(true);
     const [orders, setOrders] = useState([]);
     const classes = useStyles();
+    const { enqueueSnackbar } = useSnackbar();
 
     useEffect(() => {
         fetchData(role);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [role]);
 
     const fetchData = async (role) => {
@@ -62,8 +65,13 @@ const OrderList = ({role}) => {
           setIsLoading(false);
         }
         catch (e) {
-          console.log(e);
-          //Handle get failure
+            enqueueSnackbar('Įvyko klaida', {
+                anchorOrigin: {
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                },
+                variant: 'error',
+            });
         }
     };
 
@@ -102,18 +110,36 @@ const OrderList = ({role}) => {
     const completeOrder = async (id) => {
         const config = { headers: {'Content-Type': 'application/json'} };
         await axiosInstance.put('orders/' + id, 3, config);
-        fetchData();
+        fetchData(role);
     }
 
     const startOrder = async (id) => {
         const config = { headers: {'Content-Type': 'application/json'} };
         await axiosInstance.put('orders/' + id, 1, config);
-        fetchData();
+        fetchData(role);
     }
 
     const collectOrder = async (id) => {
-        await axiosInstance.put('orders/collect/' + id);
-        fetchData();
+        try {
+            await axiosInstance.put('orders/collect/' + id);
+            enqueueSnackbar('Užsakymas atsiimtas', {
+                anchorOrigin: {
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                },
+                variant: 'success',
+              });
+            fetchData(role);
+        }
+        catch (e) {
+            enqueueSnackbar('Įvyko klaida', {
+                anchorOrigin: {
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                },
+                variant: 'error',
+            });
+        }
     }
 
     const OrderInformation = ({order}) => {
@@ -192,6 +218,8 @@ const OrderList = ({role}) => {
                 <TableCell align="right">{orderState[row.state]}</TableCell>
                 {role === "system" && row.state === 0 && <TableCell ><Button onClick={() => startOrder(row.id)}>Užsakymas pradėtas</Button></TableCell>}
                 {role === "system" && row.state === 1 && <TableCell ><Button onClick={() => completeOrder(row.id)}>Užsakymas įvykdytas</Button></TableCell>}
+                {role === "system" && row.state !== 1 && row.state !== 0 && <TableCell ></TableCell>}
+                {role !== "system" && (row.state === 2 || row.state === 0 || row.state === 1) && <TableCell ></TableCell>}
                 {role !== "system" && row.state === 3 && <TableCell ><Button onClick={() => collectOrder(row.id)}>Atsiimti užsakymą</Button></TableCell>}
               </ExpandableTableRow>
             ))}

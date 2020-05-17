@@ -14,6 +14,7 @@ import * as actions from './actions';
 import {axiosInstance} from '../../axiosInstance';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Redirect } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(() => ({
     headerWrapper: {
@@ -33,6 +34,7 @@ const Cart = ({role, dispatchRemoveItem, dispatchRemoveAll, dispatchAddItem, dis
     const cartItems = useSelector((state) => state.cart.items);
     const cartPrice = useSelector((state) => state.cart.totalPrice);
     const classes = useStyles();
+    const { enqueueSnackbar } = useSnackbar();
 
     const postOrder = async () => {
       setIsLoading(true);
@@ -40,14 +42,42 @@ const Cart = ({role, dispatchRemoveItem, dispatchRemoveAll, dispatchAddItem, dis
       (role === 'admin' ? userId = 1 : userId = 2)
       try {
         const response = await axiosInstance.post('orders', {items: cartItems, userId: userId });
-        if (response.data === -1) console.log('Not enough items in stock, maybe add a snackbar latter')
-        if (response.data === -2) console.log('No free lockers, maybe add a snackbar latter')
-        dispatchClear();
-        setRedirect(true);
+        if (response.data === -1)
+          enqueueSnackbar('Not enough items in stock', {
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'center',
+            },
+            variant: 'error',
+          });
+        else if (response.data === -2)
+          enqueueSnackbar('All lockers are currently full', {
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'center',
+            },
+            variant: 'error',
+          });
+        else {
+          dispatchClear();
+          setRedirect(true);
+          enqueueSnackbar('Order created', {
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'center',
+            },
+            variant: 'success',
+          });
+        }
       }
       catch (e) {
-          console.log(e)
-          //Handle post failure
+        enqueueSnackbar('Something went wrong', {
+          anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'center',
+          },
+          variant: 'error',
+        });
       }
       setIsLoading(false);
     }
