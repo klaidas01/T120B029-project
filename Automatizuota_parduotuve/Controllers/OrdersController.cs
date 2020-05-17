@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Automatizuota_parduotuve.Context;
 using Automatizuota_parduotuve.Models;
 using Services.Interfaces;
+using Automatizuota_parduotuve.Enums;
 
 namespace Automatizuota_parduotuve.Controllers
 {
@@ -64,6 +65,27 @@ namespace Automatizuota_parduotuve.Controllers
             }
 
             return Ok(item);
+        }
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Order>> updateOrderState([FromRoute]int id, [FromBody]int newState)
+        {
+            if (newState < 0 || newState > 4) return BadRequest();
+            var order = await _orderService.UpdateOrder(id, newState);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            return Ok(order);
+        }
+        [HttpPut("collect/{id}")]
+        public async Task<ActionResult<Order>> collectOrder(int id)
+        {
+            var order = await _orderService.CollectOrder(id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            return Ok(order);
         }
     }
 }

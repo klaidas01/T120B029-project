@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Automatizuota_parduotuve.Context;
+using Automatizuota_parduotuve.Enums;
 using Automatizuota_parduotuve.Models;
 using Microsoft.EntityFrameworkCore;
 using Services.Interfaces;
@@ -86,6 +87,32 @@ namespace Automatizuota_parduotuve.Services.Interfaces
             _context.Orders.Remove(order);
             await _context.SaveChangesAsync();
 
+            return order;
+        }
+        public async Task<Order> UpdateOrder(int id, int state)
+        {
+            var order = await _context.Orders.FindAsync(id);
+            if (order == null)
+            {
+                return null;
+            }
+            order.state = (OrderState)state;
+            await _context.SaveChangesAsync();
+
+            return order;
+        }
+        public async Task<Order> CollectOrder(int id)
+        {
+            var order = await _context.Orders.FindAsync(id);
+            var locker = await _context.Lockers.FindAsync(order.LockerId);
+            if (order == null || locker == null)
+            {
+                return null;
+            }
+            order.state = OrderState.retrieved;
+            await _context.SaveChangesAsync();
+            locker.isFull = false;
+            await _context.SaveChangesAsync();
             return order;
         }
     }

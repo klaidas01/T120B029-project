@@ -12,6 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles(() => ({
     center: {
@@ -98,6 +99,23 @@ const OrderList = ({role}) => {
         );
     };
 
+    const completeOrder = async (id) => {
+        const config = { headers: {'Content-Type': 'application/json'} };
+        await axiosInstance.put('orders/' + id, 3, config);
+        fetchData();
+    }
+
+    const startOrder = async (id) => {
+        const config = { headers: {'Content-Type': 'application/json'} };
+        await axiosInstance.put('orders/' + id, 1, config);
+        fetchData();
+    }
+
+    const collectOrder = async (id) => {
+        await axiosInstance.put('orders/collect/' + id);
+        fetchData();
+    }
+
     const OrderInformation = ({order}) => {
         return (
             <>
@@ -158,6 +176,7 @@ const OrderList = ({role}) => {
               <TableCell>Užsakymo data</TableCell>
               <TableCell align="right">Numatyta įvykdymo data</TableCell>
               <TableCell align="right">Būsena</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -171,6 +190,9 @@ const OrderList = ({role}) => {
                 </TableCell>
                 <TableCell align="right">{getDateString(row.predictedCompletionTime)}</TableCell>
                 <TableCell align="right">{orderState[row.state]}</TableCell>
+                {role === "system" && row.state === 0 && <TableCell ><Button onClick={() => startOrder(row.id)}>Užsakymas pradėtas</Button></TableCell>}
+                {role === "system" && row.state === 1 && <TableCell ><Button onClick={() => completeOrder(row.id)}>Užsakymas įvykdytas</Button></TableCell>}
+                {role !== "system" && row.state === 3 && <TableCell ><Button onClick={() => collectOrder(row.id)}>Atsiimti užsakymą</Button></TableCell>}
               </ExpandableTableRow>
             ))}
           </TableBody>
