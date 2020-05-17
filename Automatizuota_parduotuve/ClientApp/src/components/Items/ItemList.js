@@ -14,6 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../Cart/actions';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(() => ({
     center: {
@@ -46,6 +47,7 @@ const ItemList = ({dispatchAddItem, role}) => {
     const [isLoading, setIsLoading] = useState(true);
     const [items, setItems] = useState([]);
     const classes = useStyles();
+    const { enqueueSnackbar } = useSnackbar();
 
     useEffect(() => {
         fetchData();
@@ -58,8 +60,13 @@ const ItemList = ({dispatchAddItem, role}) => {
           setIsLoading(false);
         }
         catch (e) {
-          console.log(e);
-          //Handle get failure
+          enqueueSnackbar('Something went wrong', {
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'center',
+            },
+            variant: 'error',
+          });
         }
     };
 

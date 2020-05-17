@@ -1,4 +1,4 @@
-import { ADD_ITEM, REMOVE_ITEM, REMOVE_ALL} from './actionTypes';
+import { ADD_ITEM, REMOVE_ITEM, REMOVE_ALL, CLEAR} from './actionTypes';
 
 export const addItem = (item) => ({
   type: ADD_ITEM,
@@ -13,4 +13,8 @@ export const removeItem = (id) => ({
 export const removeAll = (id) => ({
   type: REMOVE_ALL,
   id,
+});
+
+export const clear = () => ({
+  type: CLEAR
 });

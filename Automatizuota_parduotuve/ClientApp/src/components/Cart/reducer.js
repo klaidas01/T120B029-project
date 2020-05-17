@@ -1,4 +1,4 @@
-import { ADD_ITEM, REMOVE_ITEM, REMOVE_ALL} from './actionTypes';
+import { ADD_ITEM, REMOVE_ITEM, REMOVE_ALL, CLEAR} from './actionTypes';
 
 export default (state = { items: [], totalPrice: 0}, action) => {
     switch (action.type) {
@@ -44,6 +44,13 @@ export default (state = { items: [], totalPrice: 0}, action) => {
                 totalPrice: parseFloat((state.totalPrice - (stateItem.price * stateItem.count)).toFixed(2)),
             };
         }
+      case CLEAR: {
+          return {
+              ...state,
+              items: [],
+              totalPrice: 0,
+          }
+      }
       default:
         return state;
     }

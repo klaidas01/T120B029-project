@@ -21,8 +21,9 @@ const Login = () => {
 
     return (
         <>
-        <Button onClick = {() => setRole("user")}>Login as user</Button>
-        <Button onClick = {() => setRole("admin")}>Login as admin</Button>
+        <div><Button onClick = {() => setRole("user")}>Login as user</Button></div>
+        <div><Button onClick = {() => setRole("admin")}>Login as admin</Button></div>
+        <div><Button onClick = {() => setRole("system")}>Login as automated system</Button></div>
         </>
     );
 }

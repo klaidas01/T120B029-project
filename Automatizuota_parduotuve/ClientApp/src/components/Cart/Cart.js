@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -11,6 +11,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { connect, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from './actions';
+import {axiosInstance} from '../../axiosInstance';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { Redirect } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 
 const useStyles = makeStyles(() => ({
     headerWrapper: {
@@ -22,14 +26,72 @@ const useStyles = makeStyles(() => ({
         flexGrow: 1,
     }
   }));
-  
 
-const Cart = ({dispatchRemoveItem, dispatchRemoveAll, dispatchAddItem}) => {
+const Cart = ({role, dispatchRemoveItem, dispatchRemoveAll, dispatchAddItem, dispatchClear}) => {
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [redirect, setRedirect] = useState(false);
     const cartItems = useSelector((state) => state.cart.items);
     const cartPrice = useSelector((state) => state.cart.totalPrice);
     const classes = useStyles();
+    const { enqueueSnackbar } = useSnackbar();
 
+    const postOrder = async () => {
+      setIsLoading(true);
+      let userId;
+      (role === 'admin' ? userId = 1 : userId = 2)
+      try {
+        const response = await axiosInstance.post('orders', {items: cartItems, userId: userId });
+        if (response.data === -1)
+          enqueueSnackbar('Not enough items in stock', {
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'center',
+            },
+            variant: 'error',
+          });
+        else if (response.data === -2)
+          enqueueSnackbar('All lockers are currently full', {
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'center',
+            },
+            variant: 'error',
+          });
+        else {
+          dispatchClear();
+          setRedirect(true);
+          enqueueSnackbar('Order created', {
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'center',
+            },
+            variant: 'success',
+          });
+        }
+      }
+      catch (e) {
+        enqueueSnackbar('Something went wrong', {
+          anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'center',
+          },
+          variant: 'error',
+        });
+      }
+      setIsLoading(false);
+    }
+
+    if (isLoading) {
+      return (
+        <div className={classes.center}>
+          <CircularProgress />
+        </div>
+      );
+    }
+    if (redirect) {
+      return <Redirect to="/orders" push />;
+    }
     return (
         <>
         <div className={classes.headerWrapper}>
@@ -63,8 +125,9 @@ const Cart = ({dispatchRemoveItem, dispatchRemoveAll, dispatchAddItem}) => {
           </TableBody>
         </Table>
       </TableContainer>
+      Bendra kaina: {cartPrice}
       <div>
-        Bendra kaina: {cartPrice}
+        <Button onClick = {() => postOrder()} disabled = {(cartItems.length === 0)}>Patvtirtinti užsakymą</Button>
       </div>
       </>
     );
@@ -80,6 +143,7 @@ export default connect(
         dispatchRemoveItem: actions.removeItem,
         dispatchRemoveAll: actions.removeAll,
         dispatchAddItem: actions.addItem,
+        dispatchClear: actions.clear,
       },
       dispatch
     )

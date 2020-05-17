@@ -22,6 +22,11 @@ namespace Automatizuota_parduotuve.Models
 
         public IList<ItemSet> ItemSets { get; set; }
 
+        public int LockerId { get; set; }
+        public Locker Locker { get; set; }
+
+        public int UserId { get; set; }
+
         public Order()
         {
             state = OrderState.ordered;

@@ -1,6 +1,6 @@
 using Automatizuota_parduotuve.Context;
 using Automatizuota_parduotuve.Services;
-using backend.Services.Interfaces;
+using Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Automatizuota_parduotuve.Services.Interfaces;
+using Newtonsoft.Json;
 
 namespace Automatizuota_parduotuve
 {
@@ -24,12 +26,18 @@ namespace Automatizuota_parduotuve
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
 
             services.AddControllersWithViews();
 
             services.AddDbContext<StoreContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IItemService, ItemService>();
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<ILockerService, LockerService>();
+            services.AddScoped<IItemSetService, ItemSetService>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

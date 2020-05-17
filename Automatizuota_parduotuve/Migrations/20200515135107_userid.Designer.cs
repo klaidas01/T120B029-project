@@ -4,14 +4,16 @@ using Automatizuota_parduotuve.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Automatizuota_parduotuve.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20200515135107_userid")]
+    partial class userid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,7 +84,7 @@ namespace Automatizuota_parduotuve.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Lockers");
+                    b.ToTable("Locker");
                 });
 
             modelBuilder.Entity("Automatizuota_parduotuve.Models.Order", b =>
@@ -120,7 +122,7 @@ namespace Automatizuota_parduotuve.Migrations
             modelBuilder.Entity("Automatizuota_parduotuve.Models.ItemSet", b =>
                 {
                     b.HasOne("Automatizuota_parduotuve.Models.Item", "Item")
-                        .WithMany()
+                        .WithMany("ItemSets")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -135,7 +137,7 @@ namespace Automatizuota_parduotuve.Migrations
             modelBuilder.Entity("Automatizuota_parduotuve.Models.Order", b =>
                 {
                     b.HasOne("Automatizuota_parduotuve.Models.Locker", "Locker")
-                        .WithMany()
+                        .WithMany("Orders")
                         .HasForeignKey("LockerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
