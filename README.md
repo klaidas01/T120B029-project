@@ -12,4 +12,4 @@ Vartotojo prisijungimas:
 email: 	user1@gmail.com
 pw:		StoreUser1
 
-Sukūrus naują paskyra priskiriama vartotojo rolė.
+Sukūrus naują paskyrą priskiriama vartotojo rolė.
