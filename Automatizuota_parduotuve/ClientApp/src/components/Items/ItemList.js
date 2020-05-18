@@ -15,6 +15,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../Cart/actions';
 import { useSnackbar } from 'notistack';
+import Can from '../Home/Can';
+import { AuthConsumer } from "../../authContext";
 
 const useStyles = makeStyles(() => ({
     center: {
@@ -42,7 +44,7 @@ const useStyles = makeStyles(() => ({
   }));
   
 
-const ItemList = ({dispatchAddItem, role}) => {
+const ItemList = ({dispatchAddItem}) => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [items, setItems] = useState([]);
@@ -51,6 +53,7 @@ const ItemList = ({dispatchAddItem, role}) => {
 
     useEffect(() => {
         fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
       }, []);
 
     const fetchData = async () => {
@@ -91,52 +94,74 @@ const ItemList = ({dispatchAddItem, role}) => {
     }
 
     return (
-        <>
-        <div className={classes.headerWrapper}>
-            <h1 className={classes.title}>Prekės</h1>
-            {role === "admin" && <Button
-              className={classes.createBtn}
-              variant="outlined"
-              component={NavLink}
-              to="/items/create"
-            >
-                Nauja prekė
-            </Button>}
-        </div>
-        <TableContainer component={Paper}>
-        <Table aria-label="item table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Pavadinimas</TableCell>
-              <TableCell align="right">Kodas</TableCell>
-              <TableCell align="right">Kiekis</TableCell>
-              <TableCell align="right">Dydis&nbsp;(cm)</TableCell>
-              <TableCell align="right">Svoris&nbsp;(g)</TableCell>
-              <TableCell align="right">Kaina&nbsp;(€)</TableCell>
-              {role === "admin" && <TableCell align="right"></TableCell>}
-              <TableCell align="right"></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {items.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell align="right">{row.code}</TableCell>
-                <TableCell align="right">{row.amount}</TableCell>
-                <TableCell align="right">{row.size}</TableCell>
-                <TableCell align="right">{row.weight}</TableCell>
-                <TableCell align="right">{row.price}</TableCell>
-                {role === "admin" && <TableCell align="right"><Button onClick={() => handleDelete(row.id)}>Ištrinti</Button></TableCell>}
-                <TableCell align="right"><Button onClick={() => dispatchAddItem({id: row.id, name: row.name, price: row.price, count:1})}>Į krepšelį</Button></TableCell>
+      <AuthConsumer>
+        {({ user }) => (
+          <>
+          <div className={classes.headerWrapper}>
+              <h1 className={classes.title}>Prekės</h1>
+              <Can 
+              role={user.role}
+              perform="items:create"
+              yes={() => 
+                <Button
+                className={classes.createBtn}
+                variant="outlined"
+                component={NavLink}
+                to="/items/create"
+                > 
+                  Nauja prekė
+                </Button>
+              }
+              />
+          </div>
+          <TableContainer component={Paper}>
+          <Table aria-label="item table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Pavadinimas</TableCell>
+                <TableCell align="right">Kodas</TableCell>
+                <TableCell align="right">Kiekis</TableCell>
+                <TableCell align="right">Dydis&nbsp;(cm)</TableCell>
+                <TableCell align="right">Svoris&nbsp;(g)</TableCell>
+                <TableCell align="right">Kaina&nbsp;(€)</TableCell>
+                <Can 
+                role={user.role}
+                perform="items:delete"
+                yes={() => 
+                  <TableCell align="right"></TableCell>
+                }
+                />
+                <TableCell align="right"></TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      </>
-    );
+            </TableHead>
+            <TableBody>
+              {items.map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell component="th" scope="row">
+                    {row.name}
+                  </TableCell>
+                  <TableCell align="right">{row.code}</TableCell>
+                  <TableCell align="right">{row.amount}</TableCell>
+                  <TableCell align="right">{row.size}</TableCell>
+                  <TableCell align="right">{row.weight}</TableCell>
+                  <TableCell align="right">{row.price}</TableCell>
+                  <Can 
+                  role={user.role}
+                  perform="items:delete"
+                  yes={() => 
+                    <TableCell align="right"><Button onClick={() => handleDelete(row.id)}>Ištrinti</Button></TableCell>
+                  }
+                  />
+                  <TableCell align="right"><Button onClick={() => dispatchAddItem({id: row.id, name: row.name, price: row.price, count:1})}>Į krepšelį</Button></TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        </>
+        )}
+      </AuthConsumer>
+    )
 }
 
 export default connect(

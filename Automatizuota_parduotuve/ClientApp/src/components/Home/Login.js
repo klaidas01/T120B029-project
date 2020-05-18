@@ -1,31 +1,15 @@
-import React, {useState} from 'react';
-import Button from '@material-ui/core/Button';
-import Layout from './Layout';
-import Routes from './Routes';
+import React from "react";
 
-const Login = () => {
+import { AuthConsumer } from "../../authContext";
 
-    const [role, setRole] = useState("guest");
-
-    const logout = () => {
-        setRole("guest");
-    }
-
-    if (role !== "guest") {
-        return (
-            <Layout role={role} logout={logout}>
-                <Routes role={role} />
-            </Layout>
-        )
-    }
-
-    return (
-        <>
-        <div><Button onClick = {() => setRole("user")}>Login as user</Button></div>
-        <div><Button onClick = {() => setRole("admin")}>Login as admin</Button></div>
-        <div><Button onClick = {() => setRole("system")}>Login as automated system</Button></div>
-        </>
-    );
-}
+const Login = () => (
+  <AuthConsumer>
+    {({ initiateLogin }) => (
+      <button className="btn btn-sm btn-primary" onClick={initiateLogin}>
+        Prisijungti
+      </button>
+    )}
+  </AuthConsumer>
+);
 
 export default Login;

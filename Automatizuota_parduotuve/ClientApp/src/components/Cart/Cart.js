@@ -27,7 +27,7 @@ const useStyles = makeStyles(() => ({
     }
   }));
 
-const Cart = ({role, dispatchRemoveItem, dispatchRemoveAll, dispatchAddItem, dispatchClear}) => {
+const Cart = ({user, dispatchRemoveItem, dispatchRemoveAll, dispatchAddItem, dispatchClear}) => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [redirect, setRedirect] = useState(false);
@@ -38,10 +38,8 @@ const Cart = ({role, dispatchRemoveItem, dispatchRemoveAll, dispatchAddItem, dis
 
     const postOrder = async () => {
       setIsLoading(true);
-      let userId;
-      (role === 'admin' ? userId = 1 : userId = 2)
       try {
-        const response = await axiosInstance.post('orders', {items: cartItems, userId: userId });
+        const response = await axiosInstance.post('orders', {items: cartItems, userId: user.id });
         if (response.data === -1)
           enqueueSnackbar('Not enough items in stock', {
             anchorOrigin: {

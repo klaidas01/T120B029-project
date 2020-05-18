@@ -32,7 +32,7 @@ namespace Automatizuota_parduotuve.Services.Interfaces
                 .Include(o => o.Locker)
                 .ToListAsync();
         }
-        public async Task<List<Order>> GetUserOrders(int id)
+        public async Task<List<Order>> GetUserOrders(string id)
         {
             return await _context.Orders
                 .Where(o => o.UserId == id)

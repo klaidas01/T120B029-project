@@ -30,7 +30,7 @@ namespace Automatizuota_parduotuve.Controllers
         }
 
         [HttpGet("user/{id}")]
-        public async Task<ActionResult<IEnumerable<Order>>> GetUserOrders(int id)
+        public async Task<ActionResult<IEnumerable<Order>>> GetUserOrders(string id)
         {
             return await _orderService.GetUserOrders(id);
         }

@@ -14,6 +14,8 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import Button from '@material-ui/core/Button';
 import { useSnackbar } from 'notistack';
+import Can from '../Home/Can';
+import { AuthConsumer } from "../../authContext";
 
 const useStyles = makeStyles(() => ({
     center: {
@@ -39,27 +41,26 @@ const orderState = {
     4: 'Atšauktas',
 }
 
-const OrderList = ({role}) => {
+const OrderList = ({user}) => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [orders, setOrders] = useState([]);
     const classes = useStyles();
     const { enqueueSnackbar } = useSnackbar();
-
     useEffect(() => {
-        fetchData(role);
+        fetchData(user);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, [role]);
+    }, [user]);
 
-    const fetchData = async (role) => {
+    const fetchData = async (user) => {
         try {
-          if (role !== 'user')
+          if (user.role !== 'user')
           {
             const result = await axiosInstance.get('orders');
             setOrders(result.data);
           }
           else {
-            const result = await axiosInstance.get('orders/user/2');
+            const result = await axiosInstance.get('orders/user/' + user.id);
             setOrders(result.data);
           }
           setIsLoading(false);
@@ -110,13 +111,13 @@ const OrderList = ({role}) => {
     const completeOrder = async (id) => {
         const config = { headers: {'Content-Type': 'application/json'} };
         await axiosInstance.put('orders/' + id, 3, config);
-        fetchData(role);
+        fetchData(user);
     }
 
     const startOrder = async (id) => {
         const config = { headers: {'Content-Type': 'application/json'} };
         await axiosInstance.put('orders/' + id, 1, config);
-        fetchData(role);
+        fetchData(user);
     }
 
     const collectOrder = async (id) => {
@@ -129,7 +130,7 @@ const OrderList = ({role}) => {
                 },
                 variant: 'success',
               });
-            fetchData(role);
+            fetchData(user);
         }
         catch (e) {
             enqueueSnackbar('Įvyko klaida', {
@@ -190,6 +191,8 @@ const OrderList = ({role}) => {
     }
 
     return (
+      <AuthConsumer>
+      {({ user }) => (
         <>
         <div className={classes.headerWrapper}>
             <h1 className={classes.title}>Užsakymai</h1>
@@ -202,6 +205,8 @@ const OrderList = ({role}) => {
               <TableCell>Užsakymo data</TableCell>
               <TableCell align="right">Numatyta įvykdymo data</TableCell>
               <TableCell align="right">Būsena</TableCell>
+              <TableCell></TableCell>
+              <TableCell></TableCell>
               <TableCell></TableCell>
             </TableRow>
           </TableHead>
@@ -216,17 +221,47 @@ const OrderList = ({role}) => {
                 </TableCell>
                 <TableCell align="right">{getDateString(row.predictedCompletionTime)}</TableCell>
                 <TableCell align="right">{orderState[row.state]}</TableCell>
-                {role === "system" && row.state === 0 && <TableCell ><Button onClick={() => startOrder(row.id)}>Užsakymas pradėtas</Button></TableCell>}
-                {role === "system" && row.state === 1 && <TableCell ><Button onClick={() => completeOrder(row.id)}>Užsakymas įvykdytas</Button></TableCell>}
-                {role === "system" && row.state !== 1 && row.state !== 0 && <TableCell ></TableCell>}
-                {role !== "system" && (row.state === 2 || row.state === 0 || row.state === 1) && <TableCell ></TableCell>}
-                {role !== "system" && row.state === 3 && <TableCell ><Button onClick={() => collectOrder(row.id)}>Atsiimti užsakymą</Button></TableCell>}
+                <Can
+                  role={user.role}
+                  perform="orders:start"
+                  data={{state: row.state}}
+                  yes={() => (
+                    <TableCell ><Button onClick={() => startOrder(row.id)}>Užsakymas pradėtas</Button></TableCell>
+                  )}
+                  no={() => (
+                    <TableCell></TableCell>
+                  )}
+                />
+                <Can
+                  role={user.role}
+                  perform="orders:complete"
+                  data={{state: row.state}}
+                  yes={() => (
+                    <TableCell ><Button onClick={() => completeOrder(row.id)}>Užsakymas įvykdytas</Button></TableCell>
+                  )}
+                  no={() => (
+                    <TableCell></TableCell>
+                  )}
+                />
+                <Can
+                  role={user.role}
+                  perform={"orders:retrieve"}
+                  data={{userId: user.id, orderOwnerId: row.userId, state: row.state}}
+                  yes={() => (
+                    <TableCell ><Button onClick={() => collectOrder(row.id)}>Atsiimti užsakymą</Button></TableCell>
+                  )}
+                  no={() => (
+                    <TableCell></TableCell>
+                  )}
+                />
               </ExpandableTableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
       </>
+      )}
+    </AuthConsumer>
     );
 }
 
