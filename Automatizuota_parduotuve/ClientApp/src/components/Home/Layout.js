@@ -5,7 +5,7 @@ import NavMenu from '../Navigation/NavMenu';
 const Layout = (props) => {
     return (
       <>
-        <NavMenu role={props.role} logout={props.logout}/>
+        <NavMenu/>
         <Container>
           {props.children}
         </Container>

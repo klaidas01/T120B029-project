@@ -7,7 +7,7 @@ namespace Automatizuota_parduotuve.Models
 {
     public class OrderDTO
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public IList<ItemDTO> Items { get; set; }
     }
 }

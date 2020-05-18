@@ -26,9 +26,16 @@ const CreateItemForm = () => {
       try {
         await axiosInstance.post('items', values);
         setRedirect(true);
+        enqueueSnackbar('Prekė sukurta', {
+          anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'center',
+          },
+          variant: 'success',
+        });
       }
       catch (e) {
-        enqueueSnackbar('Something went wrong', {
+        enqueueSnackbar('Įvyko klaida', {
           anchorOrigin: {
             vertical: 'bottom',
             horizontal: 'center',
