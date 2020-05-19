@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Automatizuota_parduotuve.Context;
 using Automatizuota_parduotuve.Enums;
@@ -101,7 +102,7 @@ namespace Automatizuota_parduotuve.Services.Interfaces
 
             return order;
         }
-        public async Task<Order> CollectOrder(int id)
+        public async Task<Order> PickUpOrder(int id)
         {
             var order = await _context.Orders.FindAsync(id);
             var locker = await _context.Lockers.FindAsync(order.LockerId);
@@ -114,6 +115,72 @@ namespace Automatizuota_parduotuve.Services.Interfaces
             locker.isFull = false;
             await _context.SaveChangesAsync();
             return order;
+        }
+
+        public async Task<Order> CollectOrder(int id)
+        {
+            var order = await _context.Orders
+                .Include(o => o.ItemSets)
+                .ThenInclude(its => its.Item)
+                .Include(o => o.Locker)
+                .Where(o => o.Id == id)
+                .FirstOrDefaultAsync();
+            if (order == null) 
+            {
+                return null;
+            }
+            
+            List<int> bestPath = new List<int>();
+            int bestPathScore = int.MaxValue;
+            List<int> currentPath = new List<int>();
+            foreach (ItemSet itemSet in order.ItemSets)
+            {
+                bestPath.Add(itemSet.ItemId);
+            }
+            var possibleRoutes = GetPermutations<int>(bestPath, bestPath.Count);
+            possibleRoutes.ToList().ForEach(x =>
+            {
+                var listOfX = new List<int>();
+                listOfX.Add(0);
+                listOfX.AddRange(x);
+                listOfX.Add(-1);
+                int currScore = 0;
+                for(int i = 0; i < x.Count()-1; i++)
+                {
+                    var item1 = order.ItemSets.ToList().Find(id => id.ItemId == listOfX[i]);
+                    var item2 = order.ItemSets.ToList().Find(id => id.ItemId == listOfX[i+1]);
+                    if (item2 != null && null != item1)
+                    {
+                        currScore += Math.Abs(item1.Item.CordinateX - item2.Item.CordinateX) + Math.Abs(item1.Item.CordinateY - item2.Item.CordinateY);
+                    } else if(item1 == null && item2 != null)
+                    {
+                        currScore += Math.Abs(item2.Item.CordinateX) + Math.Abs(item2.Item.CordinateY);
+                    } else if(item2 == null && item1 != null)
+                    {
+                        currScore += Math.Abs(item1.Item.CordinateX) + Math.Abs(item1.Item.CordinateY);
+                    }  
+                    
+                    if (currScore > bestPathScore) break;
+                }
+                if(currScore < bestPathScore)
+                {
+                    bestPathScore = currScore;
+                    bestPath.Clear();
+                    bestPath.AddRange(x);
+                }
+            });
+             Thread.Sleep(bestPathScore * 1000);
+            Console.WriteLine("Collected successfully");
+
+            return order;
+        }
+
+        static IEnumerable<IEnumerable<T>> GetPermutations<T>(IEnumerable<T> list, int length)
+        {
+            if (length == 1) return list.Select(t => new T[] { t });
+            return GetPermutations(list, length - 1)
+                .SelectMany(t => list.Where(o => !t.Contains(o)),
+                    (t1, t2) => t1.Concat(new T[] { t2 }));
         }
     }
 }
