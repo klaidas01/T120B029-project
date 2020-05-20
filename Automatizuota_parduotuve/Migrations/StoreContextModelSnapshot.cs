@@ -123,6 +123,33 @@ namespace Automatizuota_parduotuve.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("Automatizuota_parduotuve.Models.Robot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DataOfCreation")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Model")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NumberOfCarts")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SizeOfCart")
+                        .HasColumnType("int");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Robots");
+                });
+
             modelBuilder.Entity("Automatizuota_parduotuve.Models.ItemSet", b =>
                 {
                     b.HasOne("Automatizuota_parduotuve.Models.Item", "Item")
