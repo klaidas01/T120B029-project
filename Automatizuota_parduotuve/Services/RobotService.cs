@@ -64,8 +64,10 @@ namespace Automatizuota_parduotuve.Services
 
         public async Task<bool> CollectOrder(Order order)
         {
-            var robots = await GetRobot();
-            var robot = robots[0];
+           // var robots = await GetRobot();
+           // var robot = robots[0];
+            var robot = await  _context.Robots.FirstOrDefaultAsync(x=> x.State == (RobotState)0);
+
             if (robot == null) return false;
             await UpdateRobot(robot.Id, 4);
             List<Item> missingItems = new List<Item>();
