@@ -7,9 +7,9 @@ namespace Automatizuota_parduotuve.Enums
 {
     public enum RobotState
     {
-        live = 0,
+        free = 0,
         broken = 1,
-        loading = 2,
+        charging = 2,
         fresh = 3,
         working = 4,
     }
