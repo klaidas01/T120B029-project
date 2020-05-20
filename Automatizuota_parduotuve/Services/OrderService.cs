@@ -18,15 +18,18 @@ namespace Automatizuota_parduotuve.Services.Interfaces
         private readonly ILockerService _lockerService;
         private readonly IItemSetService _itemSetService;
         private readonly IRobotService _robotService;
+        private readonly IMessageService _MessageService;
 
 
-        public OrderService(StoreContext context, IItemService itemService, ILockerService lockerService, IItemSetService itemSetService, IRobotService robotService)
+        public OrderService(StoreContext context, IItemService itemService, ILockerService lockerService,
+            IItemSetService itemSetService, IRobotService robotService,IMessageService messageService)
         {
             _context = context;
             _itemService = itemService;
             _lockerService = lockerService;
             _itemSetService = itemSetService;
             _robotService = robotService;
+            _MessageService = messageService;
         }
         public async Task<List<Order>> GetOrders()
         {
@@ -133,7 +136,13 @@ namespace Automatizuota_parduotuve.Services.Interfaces
                 return null;
             }
             var x = await _robotService.CollectOrder(order);
-            
+            if (x == false)
+            {
+                var message = new Message();
+                message.Text = "Robotas nerastas";
+                message.IsDelivered = false;
+                _MessageService.CreateMessage(message);
+            }
             return order;
         }
 

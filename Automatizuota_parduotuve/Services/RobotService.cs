@@ -123,13 +123,11 @@ namespace Automatizuota_parduotuve.Services
                 var message = new Message();
                 message.Text = "Prekės trūkumas - " + MissingItemsId;
                 message.IsDelivered = false;
-                // pranest apie nesurinkta uzsayma
                 _MessageService.CreateMessage(message);
-                return false;
+                
             }
             else
             {
-                //paejo
                 var message = new Message();
                 message.Text = "Sekmingas užsakymas" + order.Id;
                 message.IsDelivered=false;
