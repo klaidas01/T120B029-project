@@ -29,7 +29,7 @@ namespace Automatizuota_parduotuve.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Journal>> PostRobot(Journal journal)
+        public async Task<ActionResult<Journal>> PostJournals(Journal journal)
         {
             var id = await _JournalService.CreateJournal(journal);
             return Ok(id);

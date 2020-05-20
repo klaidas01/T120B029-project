@@ -42,6 +42,9 @@ namespace Automatizuota_parduotuve.Context
 
             modelBuilder.Entity<Journal>()
                 .HasKey(s => s.Id);
+
+            modelBuilder.Entity<Message>()
+              .HasKey(v => v.Id);
         }
 
         public DbSet<Item> Items { get; set; }
@@ -49,7 +52,7 @@ namespace Automatizuota_parduotuve.Context
         public DbSet<Order> Orders { get; set; }
         public DbSet<Locker> Lockers { get; set; }
         public DbSet<Robot> Robots { get; set; }
-
         public DbSet<Journal> Journals { get; set; }
+        public DbSet<Message> Messages { get; set; }
     }
 }

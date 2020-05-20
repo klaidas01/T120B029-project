@@ -40,6 +40,7 @@ namespace Automatizuota_parduotuve
             services.AddScoped<IItemSetService, ItemSetService>();
             services.AddScoped<IRobotService, RobotService>();
             services.AddScoped<IJournalService, JournalService>();
+            services.AddScoped<IMessageService, MessageService>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
