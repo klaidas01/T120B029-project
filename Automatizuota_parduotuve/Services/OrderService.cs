@@ -129,7 +129,8 @@ namespace Automatizuota_parduotuve.Services.Interfaces
             {
                 return null;
             }
-            
+            // choose machine
+            List<Item> missingItems = new List<Item>();
             List<int> bestPath = new List<int>();
             int bestPathScore = int.MaxValue;
             List<int> currentPath = new List<int>();
@@ -169,8 +170,22 @@ namespace Automatizuota_parduotuve.Services.Interfaces
                     bestPath.AddRange(x);
                 }
             });
-             Thread.Sleep(bestPathScore * 1000);
-            Console.WriteLine("Collected successfully");
+            // robot.collectOrder()
+           //  Thread.Sleep(bestPathScore * 1000);
+           if(missingItems.Count > 0)
+            {
+                //pranesti apie trukstamas prekes
+                //inform admin par
+                // pranest apie nesurinkta uzsayma
+
+            } else
+            {
+                //paejo
+                //paskirt spintele NEBE
+                order = await UpdateOrder(id, 3);
+                //pranest telefonu paralel
+                //update robot
+            }
 
             return order;
         }

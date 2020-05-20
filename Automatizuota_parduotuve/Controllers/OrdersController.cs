@@ -102,11 +102,11 @@ namespace Automatizuota_parduotuve.Controllers
             {
                 return NotFound();
             }
-            order = await _orderService.UpdateOrder(id, 3);
-            if (order == null)
-            {
-                return NotFound();
-            }
+            //order = await _orderService.UpdateOrder(id, 3);
+            //if (order == null)
+           // {
+             //   return NotFound();
+            //}
 
             return Ok(order);
         }
