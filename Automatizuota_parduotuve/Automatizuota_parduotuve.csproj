@@ -39,6 +39,16 @@
   <ItemGroup>
     <Compile Remove="Context\20200515114503_orders.cs" />
     <Compile Remove="Context\20200515114503_orders.Designer.cs" />
+    <Compile Remove="Migrations\20200520115619_initial2.cs" />
+    <Compile Remove="Migrations\20200520115619_initial2.Designer.cs" />
+    <Compile Remove="Migrations\20200520161826_robot.cs" />
+    <Compile Remove="Migrations\20200520161826_robot.Designer.cs" />
+    <Compile Remove="Migrations\20200520162050_Robot.cs" />
+    <Compile Remove="Migrations\20200520162050_Robot.Designer.cs" />
+    <Compile Remove="Migrations\20200520162315_Robot.cs" />
+    <Compile Remove="Migrations\20200520162315_Robot.Designer.cs" />
+    <Compile Remove="Migrations\20200520162935_Robot.cs" />
+    <Compile Remove="Migrations\20200520162935_Robot.Designer.cs" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

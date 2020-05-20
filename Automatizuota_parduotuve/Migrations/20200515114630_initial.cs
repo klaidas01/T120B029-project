@@ -5,8 +5,10 @@ namespace Automatizuota_parduotuve.Migrations
 {
     public partial class initial : Migration
     {
+        
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            
             migrationBuilder.CreateTable(
                 name: "Items",
                 columns: table => new
@@ -70,8 +72,10 @@ namespace Automatizuota_parduotuve.Migrations
                 name: "IX_ItemSets_OrderId",
                 table: "ItemSets",
                 column: "OrderId");
+                
+                
         }
-
+        
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

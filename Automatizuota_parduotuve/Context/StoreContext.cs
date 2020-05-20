@@ -36,11 +36,15 @@ namespace Automatizuota_parduotuve.Context
 
             modelBuilder.Entity<Locker>()
                 .HasKey(l => l.Id);
+
+            modelBuilder.Entity<Robot>()
+                .HasKey(p => p.Id);
         }
 
         public DbSet<Item> Items { get; set; }
         public DbSet<ItemSet> ItemSets { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Locker> Lockers { get; set; }
+        public DbSet<Robot> Robots { get; set; }
     }
 }
