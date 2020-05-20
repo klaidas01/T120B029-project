@@ -73,6 +73,24 @@ namespace Automatizuota_parduotuve.Migrations
                     b.ToTable("ItemSets");
                 });
 
+            modelBuilder.Entity("Automatizuota_parduotuve.Models.Journal", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Journals");
+                });
+
             modelBuilder.Entity("Automatizuota_parduotuve.Models.Locker", b =>
                 {
                     b.Property<int>("Id")
