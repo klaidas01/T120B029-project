@@ -11,11 +11,13 @@ namespace Automatizuota_parduotuve.Services
 {
     public class RobotService : IRobotService
     {
+        private readonly IMessageService _MessageService;
         private readonly Context.StoreContext _context;
 
-        public RobotService(Context.StoreContext context)
+        public RobotService(Context.StoreContext context, IMessageService messageService)
         {
             _context = context;
+            _MessageService = messageService;
         }
 
         public async Task<List<Robot>> GetRobot()
@@ -112,20 +114,26 @@ namespace Automatizuota_parduotuve.Services
                     bestPath.AddRange(x);
                 }
             });
-            if (missingItems.Count > 0)
+            if (missingItems.Count == 0)
             {
-                //pranesti apie trukstamas prekes
-                //inform admin par
-                // pranest apie nesurinkta uzsayma
-                return false;
+                string MissingItemsId = "";
+                foreach(var missingItem in missingItems)
+                {
+                    MissingItemsId += missingItem.Id.ToString();
+                    MissingItemsId += "_";
+                }
+                var message = new Message();
+                message.Text = "Prekės trūkumas - " + MissingItemsId;
+                message.IsDelivered = false;
+                _MessageService.CreateMessage(message);
+                
             }
             else
             {
-                //paejo
-                
-                //order = await orderService.UpdateOrder(order.Id, 3);
-                //pranest telefonu paralel
-                //update robot
+                var message = new Message();
+                message.Text = "Sekmingas užsakymas" + order.Id;
+                message.IsDelivered=false;
+                _MessageService.CreateMessage(message);
                 UpdateRobot(robot.Id, 0);
             }
             return true;
