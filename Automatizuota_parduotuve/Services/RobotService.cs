@@ -114,7 +114,7 @@ namespace Automatizuota_parduotuve.Services
                     bestPath.AddRange(x);
                 }
             });
-            if (missingItems.Count == 0)
+            if (missingItems.Count > 0)
             {
                 string MissingItemsId = "";
                 foreach(var missingItem in missingItems)
@@ -126,7 +126,9 @@ namespace Automatizuota_parduotuve.Services
                 message.Text = "Prekės trūkumas - " + MissingItemsId;
                 message.IsDelivered = false;
                 _MessageService.CreateMessage(message);
-                
+                message.Text = "Nesekmingas užsakymas" + order.Id;
+                _MessageService.CreateMessage(message);
+
             }
             else
             {
