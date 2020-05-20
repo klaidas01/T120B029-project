@@ -120,9 +120,9 @@ const OrderList = ({user}) => {
         fetchData(user);
     }
 
-    const collectOrder = async (id) => {
+    const pickupOrder = async (id) => {
         try {
-            await axiosInstance.put('orders/collect/' + id);
+            await axiosInstance.put('orders/pickup/' + id);
             enqueueSnackbar('Užsakymas atsiimtas', {
                 anchorOrigin: {
                   vertical: 'bottom',
@@ -248,7 +248,7 @@ const OrderList = ({user}) => {
                   perform={"orders:retrieve"}
                   data={{userId: user.id, orderOwnerId: row.userId, state: row.state}}
                   yes={() => (
-                    <TableCell ><Button onClick={() => collectOrder(row.id)}>Atsiimti užsakymą</Button></TableCell>
+                    <TableCell ><Button onClick={() => pickupOrder(row.id)}>Atsiimti užsakymą</Button></TableCell>
                   )}
                   no={() => (
                     <TableCell></TableCell>

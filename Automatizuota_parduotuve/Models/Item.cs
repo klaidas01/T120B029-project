@@ -21,5 +21,9 @@ namespace Automatizuota_parduotuve.Models
         public double Weight { get; set; }
 
         public double Price { get; set; }
+
+        public int CordinateX { get; set; }
+
+        public int CordinateY { get; set; }
     }
 }

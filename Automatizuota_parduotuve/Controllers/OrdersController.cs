@@ -77,14 +77,37 @@ namespace Automatizuota_parduotuve.Controllers
             }
             return Ok(order);
         }
-        [HttpPut("collect/{id}")]
-        public async Task<ActionResult<Order>> collectOrder(int id)
+        [HttpPut("pickup/{id}")]
+        public async Task<ActionResult<Order>> pickupOrder(int id)
         {
-            var order = await _orderService.CollectOrder(id);
+            var order = await _orderService.PickUpOrder(id);
             if (order == null)
             {
                 return NotFound();
             }
+            return Ok(order);
+        }
+
+
+        [HttpPut("collect/{id}")]
+        public async Task<ActionResult<Order>> collectOrder(int id)
+        {
+            var order = await _orderService.UpdateOrder(id, 1);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            order = await _orderService.CollectOrder(id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            order = await _orderService.UpdateOrder(id, 3);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
             return Ok(order);
         }
     }

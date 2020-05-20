@@ -32,6 +32,12 @@ namespace Automatizuota_parduotuve.Migrations
                     b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CordinateX")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CordinateY")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
