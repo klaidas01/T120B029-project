@@ -13,5 +13,6 @@ namespace Automatizuota_parduotuve.Services.Interfaces
         public Task<Robot> UpdateRobot(int id, int state);
         public Task<int> CreateRobot(Robot locker);
         public Task<Robot> DeleteRobot(int id);
+        public Task<bool> CollectOrder(Order order);
     }
 }

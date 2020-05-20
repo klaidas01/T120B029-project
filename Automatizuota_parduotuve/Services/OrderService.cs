@@ -17,13 +17,16 @@ namespace Automatizuota_parduotuve.Services.Interfaces
         private readonly IItemService _itemService;
         private readonly ILockerService _lockerService;
         private readonly IItemSetService _itemSetService;
+        private readonly IRobotService _robotService;
 
-        public OrderService(StoreContext context, IItemService itemService, ILockerService lockerService, IItemSetService itemSetService)
+
+        public OrderService(StoreContext context, IItemService itemService, ILockerService lockerService, IItemSetService itemSetService, IRobotService robotService)
         {
             _context = context;
             _itemService = itemService;
             _lockerService = lockerService;
             _itemSetService = itemSetService;
+            _robotService = robotService;
         }
         public async Task<List<Order>> GetOrders()
         {
@@ -129,73 +132,11 @@ namespace Automatizuota_parduotuve.Services.Interfaces
             {
                 return null;
             }
-            // choose machine
-            List<Item> missingItems = new List<Item>();
-            List<int> bestPath = new List<int>();
-            int bestPathScore = int.MaxValue;
-            List<int> currentPath = new List<int>();
-            foreach (ItemSet itemSet in order.ItemSets)
-            {
-                bestPath.Add(itemSet.ItemId);
-            }
-            var possibleRoutes = GetPermutations<int>(bestPath, bestPath.Count);
-            possibleRoutes.ToList().ForEach(x =>
-            {
-                var listOfX = new List<int>();
-                listOfX.Add(0);
-                listOfX.AddRange(x);
-                listOfX.Add(-1);
-                int currScore = 0;
-                for(int i = 0; i < x.Count()-1; i++)
-                {
-                    var item1 = order.ItemSets.ToList().Find(id => id.ItemId == listOfX[i]);
-                    var item2 = order.ItemSets.ToList().Find(id => id.ItemId == listOfX[i+1]);
-                    if (item2 != null && null != item1)
-                    {
-                        currScore += Math.Abs(item1.Item.CordinateX - item2.Item.CordinateX) + Math.Abs(item1.Item.CordinateY - item2.Item.CordinateY);
-                    } else if(item1 == null && item2 != null)
-                    {
-                        currScore += Math.Abs(item2.Item.CordinateX) + Math.Abs(item2.Item.CordinateY);
-                    } else if(item2 == null && item1 != null)
-                    {
-                        currScore += Math.Abs(item1.Item.CordinateX) + Math.Abs(item1.Item.CordinateY);
-                    }  
-                    
-                    if (currScore > bestPathScore) break;
-                }
-                if(currScore < bestPathScore)
-                {
-                    bestPathScore = currScore;
-                    bestPath.Clear();
-                    bestPath.AddRange(x);
-                }
-            });
-            // robot.collectOrder()
-           //  Thread.Sleep(bestPathScore * 1000);
-           if(missingItems.Count > 0)
-            {
-                //pranesti apie trukstamas prekes
-                //inform admin par
-                // pranest apie nesurinkta uzsayma
-
-            } else
-            {
-                //paejo
-                //paskirt spintele NEBE
-                order = await UpdateOrder(id, 3);
-                //pranest telefonu paralel
-                //update robot
-            }
-
+            var x = await _robotService.CollectOrder(order);
+            
             return order;
         }
 
-        static IEnumerable<IEnumerable<T>> GetPermutations<T>(IEnumerable<T> list, int length)
-        {
-            if (length == 1) return list.Select(t => new T[] { t });
-            return GetPermutations(list, length - 1)
-                .SelectMany(t => list.Where(o => !t.Contains(o)),
-                    (t1, t2) => t1.Concat(new T[] { t2 }));
-        }
+        
     }
 }
