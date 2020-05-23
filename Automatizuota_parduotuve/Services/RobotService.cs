@@ -125,7 +125,7 @@ namespace Automatizuota_parduotuve.Services
                 var message = new Message();
                 message.Text = "Prekės trūkumas - " + MissingItemsId;
                 message.IsDelivered = false;
-                _MessageService.CreateMessage(message);
+                await _MessageService.CreateMessage(message);
                 
             }
             else
@@ -133,8 +133,8 @@ namespace Automatizuota_parduotuve.Services
                 var message = new Message();
                 message.Text = "Sekmingas užsakymas" + order.Id;
                 message.IsDelivered=false;
-                _MessageService.CreateMessage(message);
-                UpdateRobot(robot.Id, 0);
+                await _MessageService.CreateMessage(message);
+                await UpdateRobot(robot.Id, 0);
             }
             return true;
         }
