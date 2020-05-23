@@ -22,7 +22,7 @@ const itemSchema = yup.object({
     .positive('Kiekis turi būti neneigiamas skaičius')
     .required('Kiekis privalomas'),
   Size: yup
-    .string()
+    .number()
     .required('Prekės dydis privalomas.')
     .max(20, 'Prekės dydis per ilgas.(daugiausiai 20 simbolių)'),
   Weight: yup
@@ -105,7 +105,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const ItemForm = ({ name, code, amount, size, weight, price, onSubmit }) => {
+const ItemForm = ({ name, code, amount, size, weight, price, cordinateX, cordinateY, onSubmit }) => {
   const classes = useStyles();
 
   const preventNonNumericalInput = (e) => {
@@ -124,6 +124,9 @@ const ItemForm = ({ name, code, amount, size, weight, price, onSubmit }) => {
         Size: size,
         Weight: weight,
         Price: price,
+        CordinateX: cordinateX,
+        CordinateY: cordinateY
+
       }}
       validationSchema={itemSchema}
       onSubmit={(values) => {
@@ -237,6 +240,36 @@ const ItemForm = ({ name, code, amount, size, weight, price, onSubmit }) => {
                   {formikProps.errors.Price && formikProps.touched.Price ? (
                     <div className={classes.error}>{formikProps.errors.Price}</div>
                   ) : null}
+                </div>
+                <div className={classes.input}>
+                    <div className={classes.inputTitle}>Koordinatė x</div>
+                    <TextField
+                        className={classes.textField}
+                        onChange={formikProps.handleChange('CordinateX')}
+                        value={formikProps.values.CordinateX}
+                        variant="outlined"
+                        type="number"
+                        inputProps={{ min: '0' }}
+                        size="small"
+                    />
+                    {formikProps.errors.CordinateX && formikProps.touched.CordinateX ? (
+                        <div className={classes.error}>{formikProps.errors.CordinateX}</div>
+                    ) : null}
+                </div>
+                <div className={classes.input}>
+                    <div className={classes.inputTitle}>Koordinatė y</div>
+                    <TextField
+                        className={classes.textField}
+                        onChange={formikProps.handleChange('CordinateY')}
+                        value={formikProps.values.CordinateY}
+                        variant="outlined"
+                        type="number"
+                        inputProps={{ min: '0' }}
+                        size="small"
+                    />
+                    {formikProps.errors.CordinateY && formikProps.touched.CordinateY ? (
+                        <div className={classes.error}>{formikProps.errors.CordinateY}</div>
+                    ) : null}
                 </div>
                 </div>
               </Grid>
