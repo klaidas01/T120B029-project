@@ -37,7 +37,19 @@ const NavMenu = () => {
                       </Button>
                     </ul>
                   }
-                />
+                    />
+                <Can
+                    role={user.role}
+                    perform="robots:list"
+                    yes={() =>
+                        <ul>
+                            <Button component={NavLink} to="/robots">
+                            Robotai
+                            </Button>
+                        </ul>
+                    }
+                        />
+
                 <Can
                   role={user.role}
                   perform="cart:view"
