@@ -133,7 +133,7 @@ const RobotForm = ({ dataOfCreation, state, model, numberOfCarts, sizeOfCart, on
                         <h1 className={classes.title}>Robotas</h1>
                         <Button className={classes.saveButton} onClick={formikProps.handleSubmit}>
                             Išsaugoti
-            </Button>
+                        </Button>
                         <Button
                             className={classes.cancelButton}
                             variant="outlined"
@@ -141,7 +141,7 @@ const RobotForm = ({ dataOfCreation, state, model, numberOfCarts, sizeOfCart, on
                             to="/robots"
                         >
                             Atšaukti
-            </Button>
+                        </Button>
                     </header>
                     <Box className={classes.formBox} border={1} borderRadius="16px 16px 0px 0px">
                         <div className={classes.boxTitleContainer}>
@@ -193,6 +193,7 @@ const RobotForm = ({ dataOfCreation, state, model, numberOfCarts, sizeOfCart, on
                                     </div>
                                 </div>
                             </Grid>
+
                             <Grid item sm={6} className={classes.section2}>
                                 <div className={classes.input}>
                                     <div className={classes.inputTitle}>Krepseliu kiekis</div>
