@@ -196,6 +196,21 @@ const ItemForm = ({ name, code, amount, size, weight, price, cordinateX, cordina
                     <div className={classes.error}>{formikProps.errors.Amount}</div>
                   ) : null}
                 </div>
+                <div className={classes.input}>
+                  <div className={classes.inputTitle}>Svoris</div>
+                  <TextField
+                    className={classes.textField}
+                    onChange={formikProps.handleChange('Weight')}
+                    value={formikProps.values.Weight}
+                    variant="outlined"
+                    type="number"
+                    inputProps={{ min: '0' }}
+                    size="small"
+                  />
+                  {formikProps.errors.Weight && formikProps.touched.Weight ? (
+                    <div className={classes.error}>{formikProps.errors.Weight}</div>
+                  ) : null}
+                </div>
                 </div>
               </Grid>
 
@@ -212,21 +227,6 @@ const ItemForm = ({ name, code, amount, size, weight, price, cordinateX, cordina
                   {formikProps.errors.Size && formikProps.touched.Size ? (
                     <div className={classes.error}>{formikProps.errors.Size}</div>
                   ) : null}
-                <div className={classes.input}>
-                  <div className={classes.inputTitle}>Svoris</div>
-                  <TextField
-                    className={classes.textField}
-                    onChange={formikProps.handleChange('Weight')}
-                    value={formikProps.values.Weight}
-                    variant="outlined"
-                    type="number"
-                    inputProps={{ min: '0' }}
-                    size="small"
-                  />
-                  {formikProps.errors.Weight && formikProps.touched.Weight ? (
-                    <div className={classes.error}>{formikProps.errors.Weight}</div>
-                  ) : null}
-                </div>
                 <div className={classes.input}>
                   <div className={classes.inputTitle}>Kaina</div>
                   <TextField
