@@ -42,7 +42,7 @@ const rules = {
         static: [
             "navbar:view",
             "orders:view",
-            "orders:collect",
+            
         ],
         dynamic: 
           {
@@ -51,9 +51,11 @@ const rules = {
             },
             "orders:complete": ({state}) => {
                 return (state === 1);
-              }
+            },
+            "orders:collect": ({ state }) => {
+                return (state === 2)
+            }
           },  
-        
       }
   };
   
