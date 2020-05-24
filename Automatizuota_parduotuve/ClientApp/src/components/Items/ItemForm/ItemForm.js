@@ -198,6 +198,7 @@ const ItemForm = ({ name, code, amount, size, weight, price, cordinateX, cordina
                 </div>
                 </div>
               </Grid>
+
               <Grid item sm={6} className={classes.section2}>
                 <div className={classes.input}>
                   <div className={classes.inputTitle}>Dydis</div>

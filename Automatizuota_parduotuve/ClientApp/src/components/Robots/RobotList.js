@@ -110,7 +110,7 @@ const RobotList = ({ dispatchAddRobot }) => {
                                     to="/robots/create"
                                 >
                                     Naujas robotas
-                </Button>
+                                </Button>
                             }
                         />
                     </div>

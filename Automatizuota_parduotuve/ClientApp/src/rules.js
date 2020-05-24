@@ -42,6 +42,7 @@ const rules = {
         static: [
             "navbar:view",
             "orders:view",
+            "orders:collect",
         ],
         dynamic: 
           {
