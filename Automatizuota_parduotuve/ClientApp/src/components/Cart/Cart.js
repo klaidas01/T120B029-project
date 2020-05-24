@@ -41,7 +41,7 @@ const Cart = ({user, dispatchRemoveItem, dispatchRemoveAll, dispatchAddItem, dis
       try {
         const response = await axiosInstance.post('orders', {items: cartItems, userId: user.id });
         if (response.data === -1)
-          enqueueSnackbar('Not enough items in stock', {
+          enqueueSnackbar('Sandėlyje nėra pakankamai prekių užsakymui', {
             anchorOrigin: {
               vertical: 'bottom',
               horizontal: 'center',
@@ -49,7 +49,7 @@ const Cart = ({user, dispatchRemoveItem, dispatchRemoveAll, dispatchAddItem, dis
             variant: 'error',
           });
         else if (response.data === -2)
-          enqueueSnackbar('All lockers are currently full', {
+          enqueueSnackbar('Visos spintelės užimtos', {
             anchorOrigin: {
               vertical: 'bottom',
               horizontal: 'center',
@@ -59,7 +59,7 @@ const Cart = ({user, dispatchRemoveItem, dispatchRemoveAll, dispatchAddItem, dis
         else {
           dispatchClear();
           setRedirect(true);
-          enqueueSnackbar('Order created', {
+          enqueueSnackbar('Užsakymas sukurtas', {
             anchorOrigin: {
               vertical: 'bottom',
               horizontal: 'center',
@@ -69,7 +69,7 @@ const Cart = ({user, dispatchRemoveItem, dispatchRemoveAll, dispatchAddItem, dis
         }
       }
       catch (e) {
-        enqueueSnackbar('Something went wrong', {
+        enqueueSnackbar('Įvyko klaida', {
           anchorOrigin: {
             vertical: 'bottom',
             horizontal: 'center',

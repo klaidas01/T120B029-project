@@ -18,19 +18,25 @@ const itemSchema = yup.object({
     .required('Prekės kodas privalomas.')
     .max(20, 'Prekės kodas per ilgas.(daugiausiai 20 simbolių)'),
   Amount: yup
-    .number()
+    .number('Prekės kiekis turi būti skaičius.')
     .positive('Kiekis turi būti neneigiamas skaičius')
     .required('Kiekis privalomas'),
   Size: yup
-    .number()
+    .number('Prekės dydis turi būti skaičius.')
     .required('Prekės dydis privalomas.')
     .max(20, 'Prekės dydis per ilgas.(daugiausiai 20 simbolių)'),
   Weight: yup
-    .number()
+    .number('Prekės svoris turi būti skaičius.')
     .required('Svoris turi būti neneigiamas skaičius'),
   Price: yup
-    .number()
+    .number('Prekės kaina turi būti skaičius.')
     .required('Kaina turi būti neneigiamas skaičius'),
+  CordinateX: yup
+    .number('Koordinatė X turi būti skaičius')
+    .required('Koordinatė Y turi būti skaičius'),
+  CordinateY: yup
+    .number('Koordinatė Y turi būti skaičius')
+    .required('Koordinatė Y turi būti skaičius'),
 });
 
 const useStyles = makeStyles(() => ({
