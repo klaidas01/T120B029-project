@@ -64,14 +64,14 @@ namespace Automatizuota_parduotuve.Services
                     (t1, t2) => t1.Concat(new T[] { t2 }));
         }
 
-        public async Task<bool> CollectOrder(Order order)
-        {
-           // var robots = await GetRobot();
-           // var robot = robots[0];
-            var robot = await  _context.Robots.FirstOrDefaultAsync(x=> x.State == (RobotState)0);
 
-            if (robot == null) return false;
-            await UpdateRobot(robot.Id, 4);
+        public async Task<Robot> chooseMachines()
+        {
+            return await _context.Robots.FirstOrDefaultAsync(x => x.State == (RobotState)0);
+        }
+
+        public List<Item> findOptimalPath(Order order)
+        {
             List<Item> missingItems = new List<Item>();
             List<int> bestPath = new List<int>();
             int bestPathScore = int.MaxValue;
@@ -114,6 +114,16 @@ namespace Automatizuota_parduotuve.Services
                     bestPath.AddRange(x);
                 }
             });
+            return missingItems;
+        }
+        public async Task<bool> CollectOrder(Order order)
+        {
+            var robot = await chooseMachines();
+            //var robot = await _context.Robots.FirstOrDefaultAsync(x => x.State == (RobotState)0);
+            if (robot == null) return false;
+            await UpdateRobot(robot.Id, 4);
+           
+            var missingItems = findOptimalPath(order);
             if (missingItems.Count > 0)
             {
                 string MissingItemsId = "";
@@ -135,8 +145,8 @@ namespace Automatizuota_parduotuve.Services
                 var message = new Message();
                 message.Text = "Sekmingas užsakymas" + order.Id;
                 message.IsDelivered=false;
-                await _MessageService.CreateMessage(message);
-                await UpdateRobot(robot.Id, 0);
+                _MessageService.CreateMessage(message);
+                UpdateRobot(robot.Id, 0);
             }
             return true;
         }
