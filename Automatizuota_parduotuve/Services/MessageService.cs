@@ -34,7 +34,7 @@ namespace Automatizuota_parduotuve.Services
                 var journal = new Journal();
                 journal.Message = message.Text;
                 journal.Sender = "Automatizuota";
-                _journalService.CreateJournal(journal);
+                await _journalService.CreateJournal(journal);
                 return journal.Id;
             }
            
