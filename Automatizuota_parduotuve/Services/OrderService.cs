@@ -117,6 +117,7 @@ namespace Automatizuota_parduotuve.Services.Interfaces
                 return null;
             }
             order.state = OrderState.retrieved;
+            order.retrievalDate = DateTime.Now;
             await _context.SaveChangesAsync();
             locker.isFull = false;
             await _context.SaveChangesAsync();
@@ -141,7 +142,7 @@ namespace Automatizuota_parduotuve.Services.Interfaces
                 var message = new Message();
                 message.Text = "Robotas nerastas";
                 message.IsDelivered = false;
-                _MessageService.CreateMessage(message);
+                await _MessageService.CreateMessage(message);
             }
             return order;
         }

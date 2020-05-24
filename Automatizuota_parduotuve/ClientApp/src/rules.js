@@ -8,6 +8,7 @@ const rules = {
         "navbar:view",
         "cart:view",
         "orders:view",
+        "robots:list",
       ],
       dynamic:
         {
@@ -22,6 +23,9 @@ const rules = {
         "items:list",
         "items:create",
         "items:delete",
+        "robots:list",
+        "robots:create",
+        "robots:delete",
         "navbar:view",
         "cart:view",
         "orders:view",

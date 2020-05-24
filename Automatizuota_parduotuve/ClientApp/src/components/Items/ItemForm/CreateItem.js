@@ -59,7 +59,7 @@ const CreateItemForm = () => {
     return <Redirect to="/items" push />;
   }
   return (
-    <ItemForm name="" code="" amount={1} size="" weight={0} price={0} onSubmit={onSumbit} />
+      <ItemForm name="" code="" amount={1} size="" weight={0} price={0} cordinateX={0} cordinateY={0} onSubmit={onSumbit} />
   );
 };
 
