@@ -23,8 +23,7 @@ const itemSchema = yup.object({
     .required('Kiekis privalomas'),
   Size: yup
     .number('Prekės dydis turi būti skaičius.')
-    .required('Prekės dydis privalomas.')
-    .max(20, 'Prekės dydis per ilgas.(daugiausiai 20 simbolių)'),
+    .required('Prekės dydis privalomas.'),
   Weight: yup
     .number('Prekės svoris turi būti skaičius.')
     .required('Svoris turi būti neneigiamas skaičius'),
