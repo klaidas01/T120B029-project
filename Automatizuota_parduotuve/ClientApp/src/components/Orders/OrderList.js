@@ -114,12 +114,6 @@ const OrderList = ({user}) => {
         fetchData(user);
     }
 
-    const startOrder = async (id) => {
-        const config = { headers: {'Content-Type': 'application/json'} };
-        await axiosInstance.put('orders/' + id, 1, config);
-        fetchData(user);
-    }
-
     const pickupOrder = async (id) => {
         try {
             await axiosInstance.put('orders/pickup/' + id);

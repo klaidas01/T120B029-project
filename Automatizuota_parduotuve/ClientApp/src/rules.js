@@ -8,7 +8,6 @@ const rules = {
         "navbar:view",
         "cart:view",
         "orders:view",
-        "robots:list",
       ],
       dynamic:
         {
