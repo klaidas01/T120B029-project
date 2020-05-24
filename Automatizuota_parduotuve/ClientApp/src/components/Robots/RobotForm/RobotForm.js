@@ -15,7 +15,6 @@ const robotSchema = yup.object({
     State: yup
         .number()
         .required('State yra privaloma')
-        .positive()
         .integer(),
     Model: yup
         .string()
