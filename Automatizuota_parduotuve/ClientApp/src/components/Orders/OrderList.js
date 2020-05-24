@@ -223,10 +223,10 @@ const OrderList = ({user}) => {
                 <TableCell align="right">{orderState[row.state]}</TableCell>
                 <Can
                   role={user.role}
-                  perform="orders:collectOrder"
+                  perform="orders:collect"
                   data={{state: row.state}}
-                  yes={() => (
-                    <TableCell ><Button onClick={() => completeOrder(row.id)}>Surinkti užsakymą</Button></TableCell>
+                        yes={() => (
+                            <TableCell ><Button onClick={() => completeOrder(row.id)}>Surinkti užsakymą</Button></TableCell>
                   )}
                   no={() => (
                     <TableCell></TableCell>
